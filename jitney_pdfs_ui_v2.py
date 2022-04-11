@@ -6,7 +6,6 @@ from PIL import ImageTk
 from tkinter import filedialog,messagebox
 from pdf_travel_service_v2 import pdf_hunting
 
-
 root = Tk()
 root.geometry("243x250")
 root.title('Jitney-PDFs')
@@ -60,8 +59,9 @@ def d_open_file():
 def pdf_automation():
     if(s_filepath and d_filepath):
         # messagebox.showinfo('Information',s_filepath)
-        # messagebox.showinfo('Information',d_filepath)
-        n_files = pdf_hunting(s_filepath, d_filepath)
+        # messagebox.showinfo('Information', variable.get())
+
+        n_files = pdf_hunting(s_filepath, d_filepath, variable.get())
         
         if(n_files == 0):
             messagebox.showwarning('Warning','Zero Files In Source Folder.')
@@ -72,7 +72,7 @@ def pdf_automation():
     else:
         messagebox.showwarning('Warning','Please Select Source and Destination.')
 
-    root.destroy()
+    # root.destroy()
 
 # 
 def user_manual():
@@ -94,6 +94,10 @@ Note
     Select base folder which contains main folders to use as destination folders.
 3. Excel File 
     Excel file is created in Destination Folder with Source Folder Name .CSV
+4. Extension 
+    Bydefault extension for pdf files. Its Dropdown button. Select Required extension.
+
+Close Application After Use.
 """)
 
 # Label - Branding
@@ -114,11 +118,29 @@ source_button.place(x = 98, y = 50)
 
 # Create a Button - Select Destination Path
 destination_button = Button(root, text="Destination", command = d_open_file)
-destination_button.place(x = 87, y = 85)
+destination_button.place(x = 85, y = 85)
 
-action_button = Button(root, text = "Action", command = pdf_automation)
-action_button.place(x = 100, y = 120)
+# Create Dropdown 
+OPTIONS = [
+                "PDF",
+                "Excel",
+                "CSV"
+] 
+variable = StringVar(root)
+variable.set(OPTIONS[0]) 
 
+w = OptionMenu(root, variable, *OPTIONS)
+w.place(x = 63, y = 117)
+
+# Create a Button - Perform Operations
+action_button = Button(root, text = "Action", command = pdf_automation, bg = "lightgreen")
+action_button.place(x = 138, y = 119)
+
+# Label - Kishan
+version = Label(root, text = "v 2.0.1")
+version.place(x = 5, y = 230)
+
+# Bydefault Message Box
 messagebox.showinfo('User Manual', """Source and Destination Path Should Be Local.
 Step 1 - Select Source Base Folder Which Contains PDF Files.
 
@@ -137,7 +159,14 @@ Note
     Select base folder which contains main folders to use as destination folders.
 3. Excel File 
     Excel file is created in Destination Folder with Source Folder Name .CSV
+4. Extension 
+    Bydefault extension for pdf files. Its Dropdown button. Select Required extension.
+
+Close Application After Use.
 """)
+
+
+
 
 
 root.mainloop()
